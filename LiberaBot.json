@@ -1,0 +1,2773 @@
+{
+  "name": "LiberaBot",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message",
+          "callback_query"
+        ],
+        "additionalFields": {
+          "download": true,
+          "imageSize": "large"
+        }
+      },
+      "id": "6db8b860-c8f7-4055-ba59-6867c0e9b17f",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -5024,
+        4568
+      ],
+      "webhookId": "3ef3f566-ebca-47aa-ab40-cb99aa98fd73",
+      "credentials": {
+        "telegramApi": {
+          "id": "MsklxiZ7a3KkTD2h",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "userText",
+              "value": "={{ $json.message.text || $json.callback_query?.data || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "chatId",
+              "value": "={{ $json.message?.chat.id || $json.callback_query?.message.chat.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "24837c0e-aebf-4cf5-9b82-4d5a702e414a",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -4800,
+        4568
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "Fecha",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "Telefono_Usuario",
+              "value": "={{ $('Workflow Configuration').item.json.chatId }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "Tipo",
+              "value": "={{ $json.data.type }}",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "Concepto",
+              "value": "={{ $json.data.concept }}",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "Categoria",
+              "value": "={{ $json.data.category }}",
+              "type": "string"
+            },
+            {
+              "id": "id-6",
+              "name": "Monto",
+              "value": "={{ $json.data.amount }}",
+              "type": "number"
+            },
+            {
+              "id": "id-7",
+              "name": "Comentario_AI",
+              "value": "={{ $json.intent }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "e0fc99b7-b7a2-424a-aa19-8cef9c93d250",
+      "name": "Prepare Sheet Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2560,
+        6080
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1je3W-2TGt_czvbHrOe92NQUWRS26WXZknIcIhu2Qp0M"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Datos",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Fecha": "={{ $json.Fecha }}",
+            "Telefono_Usuario": "={{ $json.Telefono_Usuario }}",
+            "Tipo": "={{ $json.Tipo }}",
+            "Concepto": "={{ $json.Concepto }}",
+            "Categoria": "={{ $json.Categoria }}",
+            "Monto": "={{ $json.Monto }}",
+            "Comentario_AI": "={{ $json.Comentario_AI }}"
+          },
+          "matchingColumns": [
+            "Telefono_Usuario"
+          ],
+          "schema": [
+            {
+              "id": "Fecha",
+              "displayName": "Fecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Telefono_Usuario",
+              "displayName": "Telefono_Usuario",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tipo",
+              "displayName": "Tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Concepto",
+              "displayName": "Concepto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Categoria",
+              "displayName": "Categoria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Monto",
+              "displayName": "Monto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Comentario_AI",
+              "displayName": "Comentario_AI",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "40ef69a2-fc48-485f-8301-ec9289c08eda",
+      "name": "Save to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2336,
+        6080
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uiXiNhWfewHgLPUn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "id": "f9c4ed47-4b9d-4814-83f9-3e324032ebb6",
+      "name": "Gemini for Motivation",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -2040,
+        6304
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "cyXl84jr8OwMxr2n",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Genera una frase motivadora de máximo 30 palabras sobre el siguiente registro financiero:\n\nTipo: {{ $('Prepare Sheet Data').item.json.Tipo }}\nConcepto: {{ $('Prepare Sheet Data').item.json.Concepto }}\nMonto: ${{ $('Prepare Sheet Data').item.json.Monto }}\n\nLa frase debe ser positiva, inspiradora y relacionada con libertad financiera. Responde solo con la frase, sin comillas ni formato adicional.",
+        "batching": {}
+      },
+      "id": "1c534e09-df2d-485d-8169-faad00bb4bfc",
+      "name": "Generate Motivational Phrase",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -2112,
+        6080
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash-image",
+          "mode": "id"
+        },
+        "prompt": "A motivational image about financial freedom, minimalist style, high quality, inspiring, wealth and prosperity theme, professional design",
+        "options": {
+          "sampleCount": 1,
+          "binaryPropertyOutput": "image"
+        }
+      },
+      "id": "355a5763-dda2-478a-bbb4-d9a3005a8eb7",
+      "name": "Generate Financial Freedom Image",
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -1760,
+        5144
+      ],
+      "notesInFlow": false,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "cyXl84jr8OwMxr2n",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Workflow Configuration').item.json.chatId }}",
+        "text": "=✅ Registro guardado exitosamente!\n\n📝 {{ $('Prepare Sheet Data').item.json.Concepto }}\n💰 ${{ $('Prepare Sheet Data').item.json.Monto }}\n\n💡 {{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "c96292d9-def6-436f-b0c9-e7f5d3588bce",
+      "name": "Send Confirmation Message",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1760,
+        6128
+      ],
+      "webhookId": "e49ee438-0e06-472f-87bd-01e150ec6d71",
+      "credentials": {
+        "telegramApi": {
+          "id": "MsklxiZ7a3KkTD2h",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $('Workflow Configuration').item.json.chatId }}",
+        "binaryData": true,
+        "binaryPropertyName": "image",
+        "additionalFields": {
+          "caption": "🌟 ¡Sigue construyendo tu libertad financiera!"
+        }
+      },
+      "id": "5c12603c-1378-43af-b295-26578d4f9262",
+      "name": "Send Motivational Image",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1536,
+        5144
+      ],
+      "webhookId": "3d8198de-0790-4be3-9e12-dec9ebc11625",
+      "credentials": {
+        "telegramApi": {
+          "id": "MsklxiZ7a3KkTD2h",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1je3W-2TGt_czvbHrOe92NQUWRS26WXZknIcIhu2Qp0M"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "UserStates"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Telefono_Usuario",
+              "lookupValue": "={{ $('Workflow Configuration').item.json.chatId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "eefdb4c3-d916-482c-bae3-cf7453999785",
+      "name": "Check User State",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -4576,
+        4568
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uiXiNhWfewHgLPUn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $input.all().length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b85a1d4d-da15-409c-ab3e-f041fa811864",
+      "name": "User Exists in State Table",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -4352,
+        4496
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1je3W-2TGt_czvbHrOe92NQUWRS26WXZknIcIhu2Qp0M"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "UserStates"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefono_Usuario": "={{ $json.Telefono_Usuario }}",
+            "Estado": "={{ $json.Estado }}",
+            "Tipo_Temporal": "={{ $json.Tipo_Temporal }}",
+            "Categoria_Temporal": "={{ $json.Categoria_Temporal }}",
+            "Concepto_Temporal": "={{ $json.Concepto_Temporal }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Telefono_Usuario",
+              "displayName": "Telefono_Usuario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tipo_Temporal",
+              "displayName": "Tipo_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Categoria_Temporal",
+              "displayName": "Categoria_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Concepto_Temporal",
+              "displayName": "Concepto_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1b945c8a-5ae6-485e-b242-a1ba67ddcfd6",
+      "name": "Create New User State",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -3904,
+        4496
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uiXiNhWfewHgLPUn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "Telefono_Usuario",
+              "value": "={{ $('Workflow Configuration').item.json.chatId }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "Estado",
+              "value": "MENU_PRINCIPAL",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "Tipo_Temporal",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "Categoria_Temporal",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "Concepto_Temporal",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1446fa6b-20e5-43c0-8c6a-8edf49371b48",
+      "name": "Prepare New User State",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -4128,
+        4496
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "a8421a77-88b3-4ad1-bf4d-b215ffbc25b7",
+      "name": "Merge User State Data",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -3680,
+        4568
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $('Workflow Configuration').item.json.userText }}",
+              "rightValue": "^(hola|/start)$",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "0be5652d-8ea4-464d-b16a-deab95b501dc",
+      "name": "Check if Hello/Start",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -3456,
+        4568
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1je3W-2TGt_czvbHrOe92NQUWRS26WXZknIcIhu2Qp0M"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "UserStates"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefono_Usuario": "={{ $('Workflow Configuration').item.json.chatId }}",
+            "Estado": "MENU_PRINCIPAL",
+            "Tipo_Temporal": "",
+            "Categoria_Temporal": "",
+            "Concepto_Temporal": ""
+          },
+          "matchingColumns": [
+            "Telefono_Usuario"
+          ],
+          "schema": [
+            {
+              "id": "Telefono_Usuario",
+              "displayName": "Telefono_Usuario",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tipo_Temporal",
+              "displayName": "Tipo_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Categoria_Temporal",
+              "displayName": "Categoria_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Concepto_Temporal",
+              "displayName": "Concepto_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b809f2ee-5cd4-40a7-a65a-4e02e617644d",
+      "name": "Update State to MENU_PRINCIPAL",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -3232,
+        4016
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uiXiNhWfewHgLPUn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Workflow Configuration').item.json.chatId }}",
+        "text": "🏦 MENÚ PRINCIPAL 🏦\n\n¿Qué deseas hacer?",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "1️⃣ Registrar Transacción",
+                    "additionalFields": {
+                      "callback_data": "MENU_REGISTER"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "2️⃣ Ver Reporte",
+                    "additionalFields": {
+                      "callback_data": "MENU_REPORT"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "ddfe82ee-d302-4e64-b675-3a2b41181fde",
+      "name": "Send Main Menu",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -3008,
+        4016
+      ],
+      "webhookId": "16fb23a2-cac6-4749-9cef-3f5e4c0cd242",
+      "credentials": {
+        "telegramApi": {
+          "id": "MsklxiZ7a3KkTD2h",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Check User State').item.json.Estado }}",
+                    "rightValue": "MENU_PRINCIPAL",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "MENU_PRINCIPAL"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Check User State').item.json.Estado }}",
+                    "rightValue": "AWAITING_TYPE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AWAITING_TYPE"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Check User State').item.json.Estado }}",
+                    "rightValue": "AWAITING_INCOME_TYPE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AWAITING_INCOME_TYPE"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Check User State').item.json.Estado }}",
+                    "rightValue": "AWAITING_EXPENSE_CATEGORY",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AWAITING_EXPENSE_CATEGORY"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Check User State').item.json.Estado }}",
+                    "rightValue": "AWAITING_INCOME_CONCEPT",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AWAITING_INCOME_CONCEPT"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Check User State').item.json.Estado }}",
+                    "rightValue": "AWAITING_EXPENSE_CONCEPT",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AWAITING_EXPENSE_CONCEPT"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Check User State').item.json.Estado }}",
+                    "rightValue": "AWAITING_INCOME_AMOUNT",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AWAITING_INCOME_AMOUNT"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Check User State').item.json.Estado }}",
+                    "rightValue": "AWAITING_EXPENSE_AMOUNT",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AWAITING_EXPENSE_AMOUNT"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d84d0121-7b9e-4915-8a74-8aa90b8ffe79",
+      "name": "Route by State",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -3232,
+        5072
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Workflow Configuration').item.json.chatId }}",
+        "text": "💰 ¿Qué tipo de transacción deseas registrar?",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "💵 Ingreso",
+                    "additionalFields": {
+                      "callback_data": "TYPE_INCOME"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "💸 Gasto",
+                    "additionalFields": {
+                      "callback_data": "TYPE_EXPENSE"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "4e239259-067e-4e8c-b8ad-fa807c4bcce9",
+      "name": "Send Type Selection",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -2784,
+        4520
+      ],
+      "webhookId": "6029cef4-2019-480d-a788-de3641bae536",
+      "credentials": {
+        "telegramApi": {
+          "id": "MsklxiZ7a3KkTD2h",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1je3W-2TGt_czvbHrOe92NQUWRS26WXZknIcIhu2Qp0M"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "UserStates"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefono_Usuario": "={{ $('Workflow Configuration').item.json.chatId }}",
+            "Estado": "AWAITING_TYPE"
+          },
+          "matchingColumns": [
+            "Telefono_Usuario"
+          ],
+          "schema": [
+            {
+              "id": "Telefono_Usuario",
+              "displayName": "Telefono_Usuario",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "dfeec6dd-0fb5-4d64-8a96-7eb9dd1cb5aa",
+      "name": "Update to AWAITING_TYPE",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2560,
+        4520
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uiXiNhWfewHgLPUn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Workflow Configuration').item.json.chatId }}",
+        "text": "💵 ¿Qué tipo de ingreso es?",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Salario",
+                    "additionalFields": {
+                      "callback_data": "INCOME_SALARY"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Freelance",
+                    "additionalFields": {
+                      "callback_data": "INCOME_FREELANCE"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Inversión",
+                    "additionalFields": {
+                      "callback_data": "INCOME_INVESTMENT"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Otro",
+                    "additionalFields": {
+                      "callback_data": "INCOME_OTHER"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "0f9fd911-1a7e-4d30-9af4-95eaf175613d",
+      "name": "Send Income Type Selection",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -2784,
+        4712
+      ],
+      "webhookId": "99b571c1-ef10-4d6a-bae7-db93b387fac4",
+      "credentials": {
+        "telegramApi": {
+          "id": "MsklxiZ7a3KkTD2h",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1je3W-2TGt_czvbHrOe92NQUWRS26WXZknIcIhu2Qp0M"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "UserStates"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefono_Usuario": "={{ $('Workflow Configuration').item.json.chatId }}",
+            "Estado": "AWAITING_INCOME_TYPE"
+          },
+          "matchingColumns": [
+            "Telefono_Usuario"
+          ],
+          "schema": [
+            {
+              "id": "Telefono_Usuario",
+              "displayName": "Telefono_Usuario",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6b4fd499-6a57-4e31-bd6d-b4bd96872a0b",
+      "name": "Update to AWAITING_INCOME_TYPE",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2560,
+        4712
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uiXiNhWfewHgLPUn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Workflow Configuration').item.json.chatId }}",
+        "text": "💸 ¿En qué categoría clasificas este gasto?",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Alimentación",
+                    "additionalFields": {
+                      "callback_data": "EXPENSE_FOOD"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Transporte",
+                    "additionalFields": {
+                      "callback_data": "EXPENSE_TRANSPORT"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Vivienda",
+                    "additionalFields": {
+                      "callback_data": "EXPENSE_HOUSING"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Entretenimiento",
+                    "additionalFields": {
+                      "callback_data": "EXPENSE_ENTERTAINMENT"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Salud",
+                    "additionalFields": {
+                      "callback_data": "EXPENSE_HEALTH"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Otro",
+                    "additionalFields": {
+                      "callback_data": "EXPENSE_OTHER"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "2421c11f-21f3-4cab-bafe-5370da92a2af",
+      "name": "Send Expense Category Selection",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -2784,
+        4904
+      ],
+      "webhookId": "2f0f3f84-0b04-4862-a7db-3b0c43098e2b",
+      "credentials": {
+        "telegramApi": {
+          "id": "MsklxiZ7a3KkTD2h",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1je3W-2TGt_czvbHrOe92NQUWRS26WXZknIcIhu2Qp0M"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "UserStates"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefono_Usuario": "={{ $('Workflow Configuration').item.json.chatId }}",
+            "Estado": "AWAITING_EXPENSE_CATEGORY"
+          },
+          "matchingColumns": [
+            "Telefono_Usuario"
+          ],
+          "schema": [
+            {
+              "id": "Telefono_Usuario",
+              "displayName": "Telefono_Usuario",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "acc422f6-1060-48a1-b66b-128f7596b24d",
+      "name": "Update to AWAITING_EXPENSE_CATEGORY",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2560,
+        4904
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uiXiNhWfewHgLPUn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Workflow Configuration').item.json.chatId }}",
+        "text": "📝 Describe brevemente el concepto de este ingreso:",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "b045fdef-6757-4cf5-b331-0c3c9d163f42",
+      "name": "Ask Income Concept",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -2784,
+        5168
+      ],
+      "webhookId": "6710c581-07ab-42a9-8913-a2a6eba1c129",
+      "credentials": {
+        "telegramApi": {
+          "id": "MsklxiZ7a3KkTD2h",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1je3W-2TGt_czvbHrOe92NQUWRS26WXZknIcIhu2Qp0M"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "UserStates"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefono_Usuario": "={{ $('Workflow Configuration').item.json.chatId }}",
+            "Estado": "AWAITING_INCOME_CONCEPT",
+            "Tipo_Temporal": "INGRESO",
+            "Categoria_Temporal": "={{ $('Workflow Configuration').item.json.userText.replace('INCOME_', '') }}"
+          },
+          "matchingColumns": [
+            "Telefono_Usuario"
+          ],
+          "schema": [
+            {
+              "id": "Telefono_Usuario",
+              "displayName": "Telefono_Usuario",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tipo_Temporal",
+              "displayName": "Tipo_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Categoria_Temporal",
+              "displayName": "Categoria_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6df938db-7a50-4834-a839-06a5b611bd6f",
+      "name": "Store Income Type and Update State",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -3008,
+        5168
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uiXiNhWfewHgLPUn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Workflow Configuration').item.json.chatId }}",
+        "text": "📝 Describe brevemente el concepto de este gasto:",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "37417550-1c0f-478b-8135-4fc7a37cc223",
+      "name": "Ask Expense Concept",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -2784,
+        5360
+      ],
+      "webhookId": "fa1f31cb-1260-4268-8564-3413091c9965",
+      "credentials": {
+        "telegramApi": {
+          "id": "MsklxiZ7a3KkTD2h",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1je3W-2TGt_czvbHrOe92NQUWRS26WXZknIcIhu2Qp0M"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "UserStates"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefono_Usuario": "={{ $('Workflow Configuration').item.json.chatId }}",
+            "Estado": "AWAITING_EXPENSE_CONCEPT",
+            "Tipo_Temporal": "GASTO",
+            "Categoria_Temporal": "={{ $('Workflow Configuration').item.json.userText.replace('EXPENSE_', '') }}"
+          },
+          "matchingColumns": [
+            "Telefono_Usuario"
+          ],
+          "schema": [
+            {
+              "id": "Telefono_Usuario",
+              "displayName": "Telefono_Usuario",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tipo_Temporal",
+              "displayName": "Tipo_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Categoria_Temporal",
+              "displayName": "Categoria_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Concepto_Temporal",
+              "displayName": "Concepto_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "face80a1-4b87-47ee-95d6-44a9607a62cc",
+      "name": "Store Expense Category and Update State",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -3008,
+        5360
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uiXiNhWfewHgLPUn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Workflow Configuration').item.json.chatId }}",
+        "text": "💵 ¿Cuál es el monto del ingreso?",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "8eec184f-e83f-452d-b10a-060141a67cbd",
+      "name": "Ask Income Amount",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -2784,
+        5552
+      ],
+      "webhookId": "6c18137c-a00f-48bf-8d2e-e3707f9cd378",
+      "credentials": {
+        "telegramApi": {
+          "id": "MsklxiZ7a3KkTD2h",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1je3W-2TGt_czvbHrOe92NQUWRS26WXZknIcIhu2Qp0M"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "UserStates"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefono_Usuario": "={{ $('Workflow Configuration').item.json.chatId }}",
+            "Estado": "AWAITING_INCOME_AMOUNT",
+            "Concepto_Temporal": "={{ $('Workflow Configuration').item.json.userText }}"
+          },
+          "matchingColumns": [
+            "Telefono_Usuario"
+          ],
+          "schema": [
+            {
+              "id": "Telefono_Usuario",
+              "displayName": "Telefono_Usuario",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Concepto_Temporal",
+              "displayName": "Concepto_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "38e2c3c7-f936-4411-825b-7ad1cfcde89c",
+      "name": "Store Income Concept and Update State",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -3008,
+        5552
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uiXiNhWfewHgLPUn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Workflow Configuration').item.json.chatId }}",
+        "text": "💸 ¿Cuál es el monto del gasto?",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "2708172a-bf5e-4081-a998-e991a4359c12",
+      "name": "Ask Expense Amount",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -2784,
+        5744
+      ],
+      "webhookId": "4e91840a-af34-4cb9-a4fb-8213aaf6455a",
+      "credentials": {
+        "telegramApi": {
+          "id": "MsklxiZ7a3KkTD2h",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1je3W-2TGt_czvbHrOe92NQUWRS26WXZknIcIhu2Qp0M"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "UserStates"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefono_Usuario": "={{ $('Workflow Configuration').item.json.chatId }}",
+            "Estado": "AWAITING_EXPENSE_AMOUNT",
+            "Concepto_Temporal": "={{ $('Workflow Configuration').item.json.userText }}"
+          },
+          "matchingColumns": [
+            "Telefono_Usuario"
+          ],
+          "schema": [
+            {
+              "id": "Telefono_Usuario",
+              "displayName": "Telefono_Usuario",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Concepto_Temporal",
+              "displayName": "Concepto_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1a387d10-8b85-49ce-8045-66be0d1159c8",
+      "name": "Store Expense Concept and Update State",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -3008,
+        5744
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uiXiNhWfewHgLPUn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "intent",
+              "value": "SAVE_INCOME",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "data.concept",
+              "value": "={{ $('Check User State').item.json.Concepto_Temporal }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "data.category",
+              "value": "={{ $('Check User State').item.json.Categoria_Temporal }}",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "data.amount",
+              "value": "={{ Number($('Workflow Configuration').item.json.userText) }}",
+              "type": "number"
+            },
+            {
+              "id": "id-5",
+              "name": "data.type",
+              "value": "={{ $('Check User State').item.json.Tipo_Temporal }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0e4a355f-41cb-44aa-8606-58a04563a5c4",
+      "name": "Prepare Income Data for Save",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3008,
+        5936
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "intent",
+              "value": "SAVE_EXPENSE",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "data.concept",
+              "value": "={{ $('Check User State').item.json.Concepto_Temporal }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "data.category",
+              "value": "={{ $('Check User State').item.json.Categoria_Temporal }}",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "data.amount",
+              "value": "={{ Number($('Workflow Configuration').item.json.userText) }}",
+              "type": "number"
+            },
+            {
+              "id": "id-5",
+              "name": "data.type",
+              "value": "={{ $('Check User State').item.json.Tipo_Temporal }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c1a7ffc6-7a75-4c2a-8477-e7760b9d2c8e",
+      "name": "Prepare Expense Data for Save",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3008,
+        6128
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1je3W-2TGt_czvbHrOe92NQUWRS26WXZknIcIhu2Qp0M"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "UserStates"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefono_Usuario": "={{ $('Workflow Configuration').item.json.chatId }}",
+            "Estado": "MENU_PRINCIPAL",
+            "Tipo_Temporal": "",
+            "Categoria_Temporal": "",
+            "Concepto_Temporal": ""
+          },
+          "matchingColumns": [
+            "Telefono_Usuario"
+          ],
+          "schema": [
+            {
+              "id": "Telefono_Usuario",
+              "displayName": "Telefono_Usuario",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tipo_Temporal",
+              "displayName": "Tipo_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Categoria_Temporal",
+              "displayName": "Categoria_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Concepto_Temporal",
+              "displayName": "Concepto_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c46ed376-df44-4688-9deb-98024b88708f",
+      "name": "Reset State to MENU_PRINCIPAL",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2784,
+        6080
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uiXiNhWfewHgLPUn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $('Workflow Configuration').item.json.userText }}",
+              "rightValue": "MENU_REGISTER",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "8272b4cc-0196-4251-9464-192c508e1438",
+      "name": "Check Menu Choice",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -3008,
+        4256
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $('Workflow Configuration').item.json.userText }}",
+              "rightValue": "TYPE_INCOME",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3856a678-0804-47cf-97b9-57a4fd7851f9",
+      "name": "Check Transaction Type",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -3008,
+        4496
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1je3W-2TGt_czvbHrOe92NQUWRS26WXZknIcIhu2Qp0M/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Datos",
+          "mode": "name"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Telefono_Usuario",
+              "lookupValue": "={{ $('Workflow Configuration').item.json.chatId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a879a749-dc43-4512-b371-64d0de7d1201",
+      "name": "Get Transaction History for Report",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2784,
+        4160
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uiXiNhWfewHgLPUn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $input.all().length }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "860f0c06-43d4-49b0-896b-31917629fe38",
+      "name": "Check if Report Data Exists",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -2560,
+        4160
+      ]
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {},
+            {
+              "aggregation": "sum",
+              "field": "Monto"
+            }
+          ]
+        },
+        "fieldsToSplitBy": "Tipo",
+        "options": {}
+      },
+      "id": "4aa1488b-29db-43b3-bd04-d33abfa62963",
+      "name": "Calculate Report Totals",
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1.1,
+      "position": [
+        -2336,
+        4036
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "85b96e1a-fd38-4163-8fa1-4963125a8a66",
+      "name": "Gemini for Report Analysis",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -2040,
+        4260
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "AB9pYUobggT7t3xP",
+          "name": "Google API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analiza las siguientes transacciones financieras del usuario y genera un reporte detallado en español. Incluye: 1) Total de ingresos, 2) Total de gastos, 3) Balance neto, 4) Análisis por categorías, 5) Recomendaciones financieras personalizadas. Datos: {{ $json }}",
+        "batching": {}
+      },
+      "id": "ce9af1fc-e0c5-452a-87a4-1f87d85aa1c3",
+      "name": "Generate Report Analysis",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -2112,
+        4036
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Workflow Configuration').item.json.chatId }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "7e62d69c-1cd0-44a4-8aa3-294957fcc3be",
+      "name": "Send Report to User",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1760,
+        4036
+      ],
+      "webhookId": "901fac13-6366-42d8-8f74-5587336fdedd",
+      "credentials": {
+        "telegramApi": {
+          "id": "MsklxiZ7a3KkTD2h",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Workflow Configuration').item.json.chatId }}",
+        "text": "📊 Aún no tienes transacciones registradas. ¡Comienza a registrar tus ingresos y gastos para ver tu reporte financiero!",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "1d34874b-dd97-4601-9df4-183fd9667134",
+      "name": "Send No Data Message",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1760,
+        4924
+      ],
+      "webhookId": "61285f06-6854-42ea-9e8f-92423a40aac6",
+      "credentials": {
+        "telegramApi": {
+          "id": "MsklxiZ7a3KkTD2h",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1je3W-2TGt_czvbHrOe92NQUWRS26WXZknIcIhu2Qp0M/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "UserStates",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefono_Usuario": "={{ $('Workflow Configuration').item.json.chatId }}",
+            "Estado": "MENU_PRINCIPAL",
+            "Tipo_Temporal": "",
+            "Categoria_Temporal": "",
+            "Concepto_Temporal": ""
+          },
+          "matchingColumns": [
+            "Telefono_Usuario"
+          ],
+          "schema": [
+            {
+              "id": "Telefono_Usuario",
+              "displayName": "Telefono_Usuario",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tipo_Temporal",
+              "displayName": "Tipo_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Categoria_Temporal",
+              "displayName": "Categoria_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Concepto_Temporal",
+              "displayName": "Concepto_Temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0cf5a776-5c0e-4bc8-8ade-7d1341e7ed50",
+      "name": "Reset State After Report",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1536,
+        4160
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uiXiNhWfewHgLPUn",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Sheet Data": {
+      "main": [
+        [
+          {
+            "node": "Save to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save to Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Generate Motivational Phrase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini for Motivation": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Motivational Phrase",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Motivational Phrase": {
+      "main": [
+        [
+          {
+            "node": "Generate Financial Freedom Image",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Confirmation Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Financial Freedom Image": {
+      "main": [
+        [
+          {
+            "node": "Send Motivational Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Check User State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check User State": {
+      "main": [
+        [
+          {
+            "node": "User Exists in State Table",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge User State Data",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Merge User State Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "User Exists in State Table": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Prepare New User State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare New User State": {
+      "main": [
+        [
+          {
+            "node": "Create New User State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create New User State": {
+      "main": [
+        [
+          {
+            "node": "Merge User State Data",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge User State Data",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge User State Data": {
+      "main": [
+        [
+          {
+            "node": "Check if Hello/Start",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Income Type Selection": {
+      "main": [
+        [
+          {
+            "node": "Update to AWAITING_INCOME_TYPE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Expense Category Selection": {
+      "main": [
+        [
+          {
+            "node": "Update to AWAITING_EXPENSE_CATEGORY",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Hello/Start": {
+      "main": [
+        [
+          {
+            "node": "Update State to MENU_PRINCIPAL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Route by State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update State to MENU_PRINCIPAL": {
+      "main": [
+        [
+          {
+            "node": "Send Main Menu",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by State": {
+      "main": [
+        [
+          {
+            "node": "Send Type Selection",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check Menu Choice",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Income Type Selection",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Expense Category Selection",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check Transaction Type",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Store Income Type and Update State",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Store Expense Category and Update State",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Store Income Concept and Update State",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Store Expense Concept and Update State",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Income Data for Save",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Expense Data for Save",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Type Selection": {
+      "main": [
+        [
+          {
+            "node": "Update to AWAITING_TYPE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Income Type and Update State": {
+      "main": [
+        [
+          {
+            "node": "Ask Income Concept",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Expense Category and Update State": {
+      "main": [
+        [
+          {
+            "node": "Ask Expense Concept",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Income Concept and Update State": {
+      "main": [
+        [
+          {
+            "node": "Ask Income Amount",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Expense Concept and Update State": {
+      "main": [
+        [
+          {
+            "node": "Ask Expense Amount",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Income Data for Save": {
+      "main": [
+        [
+          {
+            "node": "Reset State to MENU_PRINCIPAL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Expense Data for Save": {
+      "main": [
+        [
+          {
+            "node": "Reset State to MENU_PRINCIPAL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reset State to MENU_PRINCIPAL": {
+      "main": [
+        [
+          {
+            "node": "Prepare Sheet Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Menu Choice": {
+      "main": [
+        [
+          {
+            "node": "Send Type Selection",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Transaction History for Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Transaction Type": {
+      "main": [
+        [
+          {
+            "node": "Send Income Type Selection",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Expense Category Selection",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Transaction History for Report": {
+      "main": [
+        [
+          {
+            "node": "Check if Report Data Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Report Data Exists": {
+      "main": [
+        [
+          {
+            "node": "Calculate Report Totals",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send No Data Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Report Totals": {
+      "main": [
+        [
+          {
+            "node": "Generate Report Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini for Report Analysis": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Report Analysis",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Report Analysis": {
+      "main": [
+        [
+          {
+            "node": "Send Report to User",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Report to User": {
+      "main": [
+        [
+          {
+            "node": "Reset State After Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send No Data Message": {
+      "main": [
+        [
+          {
+            "node": "Reset State After Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true
+  },
+  "versionId": "9a2943ca-3dff-4eca-bdd1-7ae8dd268619",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c1062b145d76067c80b610cc69409880ab957e1f2e14710903788c0c22f73e27"
+  },
+  "id": "myMp9mMYIZXwNpIfJSQiC",
+  "tags": []
+}
